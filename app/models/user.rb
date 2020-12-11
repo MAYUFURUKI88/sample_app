@@ -1,5 +1,5 @@
 class User < ApplicationRecord
-  attr_accessor :remenber_token
+  attr_accessor :remember_token
 before_save {email.downcase!}
   with_options presence: true do
     validates :name, length: {maximum: 50}
@@ -23,17 +23,17 @@ class << self
   end
 end
 
-  def remenber
-    self.remenber_token = User.new_token
-    update_attribute(:remenber_digest, User.digest(remenber_token))
+  def remember
+    self.remember_token = User.new_token
+    update_attribute(:remember_digest, User.digest(remember_token))
   end
 
-  def authenticated?(remenber_token)
-    return false if remenber_digest.nil?
-    BCrypt::Password.new(remenber_digest).is_password?(remenber_token)
+  def authenticated?(remember_token)
+    return false if remember_digest.nil?
+    BCrypt::Password.new(remember_digest).is_password?(remember_token)
   end
 
   def forget
-    update_attribute(:remenber_digest, nil)
+    update_attribute(:remember_digest, nil)
   end
 end
